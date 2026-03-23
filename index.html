@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alamine Moustapha — Data Analyste</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --accent: #00e5a0;
+      --accent2: #005f44;
+      --text: #f0f0f0;
+      --muted: #888;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(13,13,13,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,229,160,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+    h1 span { color: var(--accent); }
+    .hero-desc {
+      margin-top: 1.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 420px;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+    .btn {
+      padding: 0.75rem 1.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: #00ffb3; transform: translateY(-2px); }
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.8rem;
+    }
+    .info-card-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .label { color: var(--muted); }
+    .info-row .value { color: var(--text); }
+    .status-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 3rem;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .skill-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-item:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .skill-category {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .skill-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* PROJETS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+    .project-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-year {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+    .project-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 0.8rem;
+    }
+    .project-desc {
+      color: var(--muted);
+      font-size: 0.83rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+    }
+    .project-link {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .project-link:hover { text-decoration: underline; }
+
+    /* FORMATION */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.35rem; top: 0.4rem;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    .timeline-date {
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+    .timeline-school { color: var(--muted); font-size: 0.82rem; }
+
+    /* CONTACT */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .contact-icon { font-size: 1.3rem; }
+    .contact-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .contact-value { font-size: 0.85rem; margin-top: 0.1rem; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 7rem 1.5rem 3rem; }
+      .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+      section { padding: 4rem 1.5rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AM.</div>
+  <ul class="nav-links">
+    <li><a href="#competences">Compétences</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="hero-tag">Disponible pour alternance</div>
+      <h1>Alamine<br/><span>Moustapha</span></h1>
+      <p class="hero-desc">
+        Étudiant en Bachelor 2 Informatique à Supinfo Paris. Passionné par la data, les bases de données et l'automatisation Python.
+      </p>
+      <div class="hero-cta">
+        <a href="#projets" class="btn btn-primary">Voir mes projets</a>
+        <a href="#contact" class="btn btn-outline">Me contacter</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="info-card">
+        <div class="info-card-title">// À propos</div>
+        <div class="info-row">
+          <span class="label">Statut</span>
+          <span class="value"><span class="status-dot"></span>En recherche d'alternance</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Formation</span>
+          <span class="value">Bachelor 2 — Supinfo Paris</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Localisation</span>
+          <span class="value">Le Perreux-sur-Marne (94)</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Langues</span>
+          <span class="value">Français · Anglais B1</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Permis</span>
+          <span class="value">B</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPÉTENCES -->
+<section id="competences">
+  <div class="section-label">// 01</div>
+  <h2 class="section-title">Compétences</h2>
+  <div class="skills-grid">
+    <div class="skill-item">
+      <div class="skill-category">Base de données</div>
+      <div class="skill-name">SQL & MySQL</div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-category">Programmation</div>
+      <div class="skill-name">Python</div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-category">Programmation</div>
+      <div class="skill-name">Java & C++</div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-category">Web</div>
+      <div class="skill-name">HTML · CSS · JS</div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-category">Collaboration</div>
+      <div class="skill-name">Git & GitHub</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETS -->
+<section id="projets">
+  <div class="section-label">// 02</div>
+  <h2 class="section-title">Projets</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-year">2025 — Supinfo Paris</div>
+      <div class="project-title">Base de données & Python</div>
+      <p class="project-desc">
+        Conception d'un schéma BDD pour une entreprise fictive. Requêtes SQL complexes (jointures, vues) et extraction automatisée via scripts Python.
+      </p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+        <span class="tag">MySQL</span>
+      </div>
+      <a href="https://github.com/alaamine/projet-bdd-python" class="project-link" target="_blank">→ Voir sur GitHub</a>
+    </div>
+    <div class="project-card">
+      <div class="project-year">2024 — Supinfo Paris</div>
+      <div class="project-title">Base de données MySQL</div>
+      <p class="project-desc">
+        Création d'une BDD complète sous MySQL : tables, insertions, requêtes avec jointures et agrégations (COUNT, SUM, GROUP BY).
+      </p>
+      <div class="project-tags">
+        <span class="tag">MySQL</span>
+        <span class="tag">SQL</span>
+      </div>
+      <a href="https://github.com/alaamine/projet-mysql" class="project-link" target="_blank">→ Voir sur GitHub</a>
+    </div>
+    <div class="project-card">
+      <div class="project-year">2024 — Supinfo Paris</div>
+      <div class="project-title">Python & MySQL</div>
+      <p class="project-desc">
+        Connexion Python ↔ MySQL, exécution de requêtes SQL depuis des scripts, affichage des résultats en tableaux et automatisation d'extractions.
+      </p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">MySQL</span>
+      </div>
+      <a href="https://github.com/alaamine/projet-python-mysql" class="project-link" target="_blank">→ Voir sur GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="section-label">// 03</div>
+  <h2 class="section-title">Formation</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Depuis oct. 2025</div>
+      <div class="timeline-title">Bachelor 2 Informatique</div>
+      <div class="timeline-school">Supinfo Paris</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Depuis sept. 2024</div>
+      <div class="timeline-title">Bachelor 1 Informatique</div>
+      <div class="timeline-school">Supinfo Paris</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2022 — 2023</div>
+      <div class="timeline-title">Baccalauréat Général</div>
+      <div class="timeline-school">Sacré Cœur — Tchad</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// 04</div>
+  <h2 class="section-title">Contact</h2>
+  <div class="contact-grid">
+    <a href="mailto:moustala005@gmail.com" class="contact-link">
+      <span class="contact-icon">✉️</span>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-value">moustala005@gmail.com</div>
+      </div>
+    </a>
+    <a href="https://www.linkedin.com/in/alamine-moustapha" target="_blank" class="contact-link">
+      <span class="contact-icon">💼</span>
+      <div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-value">alamine-moustapha</div>
+      </div>
+    </a>
+    <a href="https://github.com/alaamine" target="_blank" class="contact-link">
+      <span class="contact-icon">🐙</span>
+      <div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-value">github.com/alaamine</div>
+      </div>
+    </a>
+    <a href="tel:+33753737893" class="contact-link">
+      <span class="contact-icon">📱</span>
+      <div>
+        <div class="contact-label">Téléphone</div>
+        <div class="contact-value">+33 7 53 73 78 93</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Alamine Maouloud Moustapha — Fait avec 💚
+</footer>
+
+</body>
+</html>
